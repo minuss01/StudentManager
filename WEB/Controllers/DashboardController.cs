@@ -9,13 +9,11 @@ using WEB.Models;
 
 namespace WEB.Controllers
 {
-    public class HomeController : Controller
+    public class DashboardController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public DashboardController()
         {
-            _logger = logger;
         }
 
         public IActionResult Index()

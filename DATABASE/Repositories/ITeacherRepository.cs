@@ -2,7 +2,7 @@
 
 namespace DATABASE.Repositories
 {
-    interface ITeacherRepository : IRepositoryBase<Teacher>
+    public interface ITeacherRepository : IRepositoryBase<Teacher>
     {
     }
 }

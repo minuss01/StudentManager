@@ -8,11 +8,9 @@ public class Context : DbContext
     {
     }
 
-    public DbSet<User> Users { get; set; }
     public DbSet<Student> Students { get; set; }
     public DbSet<Teacher> Teachers { get; set; }
     public DbSet<Group> Groups { get; set; }
-
 
     #region Required
     protected override void OnModelCreating(ModelBuilder modelBuilder)

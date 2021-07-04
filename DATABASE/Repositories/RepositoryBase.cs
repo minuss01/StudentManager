@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace DATABASE.Repositories
 {
@@ -14,7 +15,7 @@ namespace DATABASE.Repositories
             _context = context;
         }
 
-        public IQueryable<T> GetAll()
+        public IQueryable<T> GetQuery()
         {
             return _context
                 .Set<T>()
@@ -47,6 +48,15 @@ namespace DATABASE.Repositories
                 .Remove(entity);
         }
 
-        
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<int> GetCount()
+        {
+            return await _context.Set<T>()
+                .CountAsync();
+        }
     }
 }
