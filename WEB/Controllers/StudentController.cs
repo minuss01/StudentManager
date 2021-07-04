@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DATABASE.Enums;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 using WEB.DTOs.Student;
+using WEB.Helpers;
 using WEB.Services;
 
 namespace WEB.Controllers
@@ -21,8 +23,19 @@ namespace WEB.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var list = await _studentService.GetList();
-            return View(list);
+            try
+            {
+                var list = await _studentService.GetList();
+                int test1 = 0;
+                int test2 = 5;
+                var res = test2 / test1;
+                return View(list);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Log(ex);
+                throw;
+            }
         }  
 
         [HttpGet]
