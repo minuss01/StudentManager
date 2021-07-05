@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WEB.DTOs.Group;
+using WEB.Helpers;
 
 namespace WEB.Services
 {
@@ -30,8 +31,9 @@ namespace WEB.Services
                     .Select(x => new SelectListItem(x.Name, x.Id.ToString()))
                     .ToListAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                ErrorLog.Log(ex);
                 throw;
             }
         }
@@ -54,6 +56,7 @@ namespace WEB.Services
             }
             catch (Exception ex)
             {
+                ErrorLog.Log(ex);
                 throw ex;
             }
         }
@@ -108,6 +111,7 @@ namespace WEB.Services
             }
             catch (Exception ex)
             {
+                ErrorLog.Log(ex);
                 throw ex;
             }
         }
@@ -130,6 +134,7 @@ namespace WEB.Services
             }
             catch (Exception ex)
             {
+                ErrorLog.Log(ex);
                 throw ex;
             }
         }
@@ -147,7 +152,51 @@ namespace WEB.Services
             }
             catch (Exception ex)
             {
+                ErrorLog.Log(ex);
                 throw ex;
+            }
+        }
+
+        public async Task<bool> GroupExists(int id)
+        {
+            try
+            {
+                return await _groupRepo
+                    .GetQuery()
+                    .AnyAsync(x => x.Id == id);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Log(ex);
+                throw;
+            }
+        }
+        
+        public async Task<int> CreatePlugIfNotExists()
+        {
+            try
+            {
+                var group = await _groupRepo
+                    .FindByCondition(x => x.Name == "ZAŚLEPKA")
+                    .FirstOrDefaultAsync();
+
+                if (group == null)
+                {
+                    group = new Group();
+                    group.Name = "ZAŚLEPKA";
+                    group.Level = LevelEnum.None;
+
+                    _groupRepo.Create(group);
+                    await _groupRepo.SaveChangesAsync();
+                }
+
+                return group.Id;
+
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Log(ex);
+                throw;
             }
         }
     }

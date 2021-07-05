@@ -7,7 +7,9 @@
 <h1>Lista studentów</h1>
 
 <p>
-    <a asp-action="Create">Dodaj</a>
+    <a asp-action="Create">Dodaj</a> |
+    <a asp-action="Import">Importuj</a> |
+    <a asp-action="Export">Eksportuj do pliku CSV</a>
 </p>
 <table class="table">
     <thead>
@@ -60,8 +62,8 @@
                     @Html.DisplayFor(modelItem => item.Level)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    @Html.ActionLink("Edytuj", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Usuń", "Delete", new { id = item.Id })
                 </td>
             </tr>
         }

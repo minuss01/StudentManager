@@ -25,8 +25,7 @@ namespace WEB.DTOs.Group
         public LevelEnum Level { get; set; }
 
         [DisplayName("Nauczyciel")]
-        [Required(ErrorMessage = StaticHelper.REQUIRED_VALIDATION_TEXT)]
-        public int TeacherId { get; set; }
+        public int? TeacherId { get; set; }
 
         public List<SelectListItem> Teachers { get; set; }
         public List<SelectListItem> Levels { get; set; }

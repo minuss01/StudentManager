@@ -1,0 +1,5 @@
+FirstName;LastName;Email;PhoneNumber;City;PostCode;Street;Level;GroupId
+Test 1;Test;email@email.com;48 321 321 321;Test;32-321;Test;Beginner;0
+Test 2;Test;email2@email.com;48 321 321 321;Test;32-321;Test;Intermidiate;0
+Test 3;Test;email3@email.com;48 321 321 321;Test;32-321;Test;Advanced;0
+Test 4;Test;email4@email.com;48 321 321 321;Test;32-321;Test;Native;0

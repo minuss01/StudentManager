@@ -2,6 +2,7 @@
 {
     public enum LevelEnum
     {
+        None = 0,
         Beginner = 1,
         Intermidiate = 2,
         Advanced = 3,

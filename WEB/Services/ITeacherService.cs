@@ -8,7 +8,6 @@ namespace WEB.Services
     public interface ITeacherService
     {
         Task<List<TeacherDto>> GetList();
-        Task GetById(int id);
         Task Create(TeacherCreateDto form);
         Task Update(TeacherEditDto form);
         Task Delete(int id);

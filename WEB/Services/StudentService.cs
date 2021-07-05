@@ -7,16 +7,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WEB.DTOs.Student;
+using WEB.Helpers;
 
 namespace WEB.Services
 {
     public class StudentService : IStudentService
     {
         private readonly IStudentRepository _studentRepo;
+        private readonly IGroupService _groupService;
 
-        public StudentService(IStudentRepository studentRepo)
+        public StudentService(
+            IStudentRepository studentRepo,
+            IGroupService groupService)
         {
             _studentRepo = studentRepo;
+            _groupService = groupService;
         }
 
         public async Task<List<StudentDto>> GetList()
@@ -31,13 +36,9 @@ namespace WEB.Services
             }
             catch (Exception ex)
             {
+                ErrorLog.Log(ex);
                 throw ex;
             }
-        }
-
-        public async Task GetById(int id)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task Create(StudentCreateDto form)
@@ -58,9 +59,10 @@ namespace WEB.Services
                 _studentRepo.Create(model);
                 await _studentRepo.SaveChangesAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                ErrorLog.Log(ex);
+                throw ex;
             }
         }
 
@@ -85,9 +87,10 @@ namespace WEB.Services
                 _studentRepo.Update(entity);
                 await _studentRepo.SaveChangesAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                ErrorLog.Log(ex);
+                throw ex;
             }
         }
 
@@ -104,6 +107,7 @@ namespace WEB.Services
             }
             catch (Exception ex)
             {
+                ErrorLog.Log(ex);
                 throw ex;
             }
         }
@@ -143,6 +147,47 @@ namespace WEB.Services
             }
             catch (Exception ex)
             {
+                ErrorLog.Log(ex);
+                throw;
+            }
+        }
+
+        public async Task CreateRange(List<StudentFromFileDto> list)
+        {
+            try
+            {
+
+                var plugGroupId = await _groupService.CreatePlugIfNotExists();
+
+                foreach (var item in list)
+                {
+                    var model = new Student();
+                    model.FirstName = item.FirstName;
+                    model.LastName = item.LastName;
+                    model.Email = item.Email;
+                    model.PhoneNumber = item.PhoneNumber;
+                    model.City = item.City;
+                    model.PostCode = item.PostCode;
+                    model.Street = item.Street;
+                    model.Level = item.Level;
+
+                    if (await _groupService.GroupExists(item.GroupId))
+                    {
+                        model.GroupId = item.GroupId;
+                    }
+                    else
+                    {
+                        model.GroupId = plugGroupId;
+                    }
+
+                    _studentRepo.Create(model);
+                }
+                
+                await _studentRepo.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Log(ex);
                 throw ex;
             }
         }

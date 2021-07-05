@@ -29,11 +29,13 @@ namespace WEB
             services.AddTransient<IStudentService, StudentService>();
             services.AddTransient<ITeacherService, TeacherService>();
             services.AddTransient<IGroupService, GroupService>();
+            services.AddTransient<IPersonalTaskService, PersonalTaskService>();
 
             // Repositories
             services.AddTransient<IStudentRepository, StudentRepository>();
             services.AddTransient<ITeacherRepository, TeacherRepository>();
             services.AddTransient<IGroupRepository, GroupRepository>();
+            services.AddTransient<IPersonalTaskRepository, PersonalTaskRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

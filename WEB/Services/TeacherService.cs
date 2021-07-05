@@ -48,11 +48,6 @@ namespace WEB.Services
             }
         }
 
-        public async Task GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task Create(TeacherCreateDto form)
         {
             try

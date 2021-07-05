@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Threading.Tasks;
 using WEB.DTOs.Group;
+using WEB.Helpers;
 using WEB.Services;
 
 namespace WEB.Controllers
@@ -21,17 +23,34 @@ namespace WEB.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var list = await _groupService.GetList();
-            return View(list);
+            try
+            {
+                var list = await _groupService.GetList();
+                return View(list);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Log(ex);
+                throw;
+            }
         }
 
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            var model = new GroupCreateDto();
-            model.Teachers = await _teacherService.GetOptions();
+            try
+            {
+                var model = new GroupCreateDto();
+                model.Teachers = await _teacherService.GetOptions();
+                model.Teachers.Insert(0, new SelectListItem("", ""));
 
-            return View(model);
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Log(ex);
+                throw;
+            }
         }
 
         [HttpPost]
@@ -50,6 +69,7 @@ namespace WEB.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLog.Log(ex);
                 throw ex;
             }
         }
@@ -59,6 +79,7 @@ namespace WEB.Controllers
         {
             var model = await _groupService.GetByIdForFrom(id);
             model.Teachers = await _teacherService.GetOptions();
+            model.Teachers.Insert(0, new SelectListItem("", ""));
 
             return View(model);
         }
@@ -79,20 +100,29 @@ namespace WEB.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLog.Log(ex);
                 throw ex;
             }
         }
 
         public async Task<IActionResult> Delete(int id)
         {
-            if (id == 0)
+            try
             {
-                return NotFound();
+                if (id == 0)
+                {
+                    return NotFound();
+                }
+
+                await _groupService.Delete(id);
+
+                return RedirectToAction(nameof(Index));
             }
-
-            await _groupService.Delete(id);
-
-            return RedirectToAction(nameof(Index));
+            catch (Exception ex)
+            {
+                ErrorLog.Log(ex);
+                throw;
+            }
         }
     }
 }

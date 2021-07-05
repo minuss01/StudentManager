@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 using WEB.DTOs.Teacher;
+using WEB.Helpers;
 using WEB.Services;
 
 namespace WEB.Controllers
@@ -16,9 +18,17 @@ namespace WEB.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var list = await _teacherService.GetList();
+            try
+            {
+                var list = await _teacherService.GetList();
 
-            return View(list);
+                return View(list);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Log(ex);
+                throw;
+            }
         } 
 
         [HttpGet]
@@ -30,47 +40,79 @@ namespace WEB.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(TeacherCreateDto form)
         {
-            if (ModelState.IsValid)
+            try
             {
-                await _teacherService.Create(form);
+                if (ModelState.IsValid)
+                {
+                    await _teacherService.Create(form);
 
-                return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Index));
+                }
+
+                return View(form);
             }
-
-            return View(form);
+            catch (Exception ex)
+            {
+                ErrorLog.Log(ex);
+                throw;
+            }
         }
 
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var model = await _teacherService.GetByIdForFrom(id);
+            try
+            {
+                var model = await _teacherService.GetByIdForFrom(id);
 
-            return View(model);
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Log(ex);
+                throw;
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> Edit(TeacherEditDto form)
         {
-            if (ModelState.IsValid)
+            try
             {
-                await _teacherService.Update(form);
+                if (ModelState.IsValid)
+                {
+                    await _teacherService.Update(form);
 
-                return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Index));
+                }
+
+                return View(form);
             }
-
-            return View(form);
+            catch (Exception ex)
+            {
+                ErrorLog.Log(ex);
+                throw;
+            }
         }
 
         public async Task<IActionResult> Delete(int id)
         {
-            if (id == 0)
+            try
             {
-                return NotFound();
+                if (id == 0)
+                {
+                    return NotFound();
+                }
+
+                await _teacherService.Delete(id);
+
+                return RedirectToAction(nameof(Index));
             }
-
-            await _teacherService.Delete(id);
-
-            return RedirectToAction(nameof(Index));
+            catch (Exception ex)
+            {
+                ErrorLog.Log(ex);
+                throw;
+            }
         }
     }
 }

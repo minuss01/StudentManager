@@ -1,8 +1,59 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<WEB.DTOs.PersonalTask.PersonalTaskDto>
+
+@{
+    ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@functions{
+    private string RenderColor(bool isDone)
+    {
+        if (isDone)
+        {
+            return "style=background-color:grey";
+        }
+
+        return "";
+    }
+}
+
+<h1>Lista zadań</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="row">
+                <div class="col-6"><input name="content" class="form-control" /></div>
+                <div class="col-6"><input type="submit" value="Dodaj" class="btn btn-primary" /></div>
+            </div>
+        </form>
+    </div>
 </div>
+@{
+    var name = string.Empty;
+}
+<ul class="list-group mt-3">
+    @foreach (var item in Model)
+    {
+        if (item.IsDone)
+        {
+            name = "Oznacz jako nie skończone";
+        }
+        else
+        {
+            name = "Oznacz jako skończone";
+        }
+
+        <li class="list-group-item" @RenderColor(item.IsDone)>
+            <div class="row align-items-center">
+                <div class="col-10">@item.Content</div>
+                <div class="col-1">@Html.ActionLink("Usuń", "Delete", new { id = item.Id })</div>
+                <div class="col-1">@Html.ActionLink(name, "ChangeState", new { id = item.Id })</div>
+            </div>
+        </li>
+    }
+</ul>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

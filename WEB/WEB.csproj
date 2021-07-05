@@ -14,13 +14,16 @@
   <ItemGroup>
     <Compile Include="Services\GroupService.cs" />
     <Compile Include="Services\IGroupService.cs" />
+    <Compile Include="Services\IPersonalTaskService.cs" />
     <Compile Include="Services\IStudentService.cs" />
     <Compile Include="Services\ITeacherService.cs" />
+    <Compile Include="Services\PersonalTaskService.cs" />
     <Compile Include="Services\StudentService.cs" />
     <Compile Include="Services\TeacherService.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="CsvHelper" Version="27.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.14" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.14">
       <PrivateAssets>all</PrivateAssets>
